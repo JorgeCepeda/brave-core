@@ -31,7 +31,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerClaudeRemote : public EngineConsumer {
  public:
   explicit EngineConsumerClaudeRemote(
-      const mojom::Model& model,
+      const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
   EngineConsumerClaudeRemote(const EngineConsumerClaudeRemote&) = delete;

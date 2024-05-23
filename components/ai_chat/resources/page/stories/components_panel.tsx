@@ -163,38 +163,65 @@ const HISTORY: mojom.ConversationTurn[] = [
 
 const MODELS: mojom.Model[] = [
   {
-    key: '1',
-    name: 'model-one',
-    displayName: 'Model One',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.BASIC,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
+    option: {
+      leoModel: {
+        key: '1',
+        name: 'model-one',
+        displayName: 'Model One',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.BASIC,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModel: undefined,
+    }
   },
   {
-    key: '2',
-    name: 'model-two-premium',
-    displayName: 'Model Two',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.PREMIUM,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
+    option: {
+      leoModel: {
+        key: '2',
+        name: 'model-two-premium',
+        displayName: 'Model Two',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.PREMIUM,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModel: undefined,
+    }
   },
   {
-    key: '3',
-    name: 'model-three-freemium',
-    displayName: 'Model Three',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.BASIC_AND_PREMIUM,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
-  }
+    option: {
+      leoModel: {
+        key: '3',
+        name: 'model-three-freemium',
+        displayName: 'Model Three',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.BASIC_AND_PREMIUM,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModel: undefined,
+    }
+  },
+  {
+    option: {
+      leoModel: undefined,
+      customModel: {
+        key: '4',
+        label: 'Microsoft Phi-3',
+        modelRequestName: 'phi3',
+        endpoint: { url: 'https://example.com' },
+        apiKey: '123456',
+      },
+    }
+  },
 ]
 
 const SAMPLE_QUESTIONS = [
@@ -226,7 +253,7 @@ export default {
       control: { type: 'select' }
     },
     model: {
-      options: MODELS.map(m => m.name),
+      options: MODELS.map(m => m.option.leoModel ? m.option.leoModel.displayName : m.option.customModel?.label),
       control: { type: 'select' }
     }
   },
@@ -241,7 +268,7 @@ export default {
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].name,
+    model: MODELS[0].option.leoModel,
     showAgreementModal: false,
     isMobile: false,
     shouldShowLongConversationInfo: false,
@@ -259,10 +286,10 @@ export default {
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
-      const currentModel = MODELS.find(m => m.name === options.args.model)
+      const currentModel = MODELS.find(m => m.option.leoModel ?  m.option.leoModel.displayName === options.args.model : m.option.customModel?.label === options.args.model)
 
       const switchToBasicModel = () => {
-        const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
+        const nonPremiumModel = MODELS.find(m => m.option.leoModel?.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 

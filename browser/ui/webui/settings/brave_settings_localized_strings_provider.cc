@@ -437,6 +437,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoAssistantManageUrlLabel",
        IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL},
+      {"braveLeoAssistantByomLabel", IDS_SETTINGS_LEO_ASSISTANT_BYOM_LABEL},
+      {"braveLeoAssistantDeleteModelConfirmation",
+       IDS_SETTINGS_LEO_ASSISTANT_DELETE_MODEL_CONFIRMATION},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},

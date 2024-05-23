@@ -67,18 +67,23 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       <span>$i18n{braveLeoModelCategory-chat}</span>
     </div>
     <template is="dom-repeat" items="[[models_]]">
-        <leo-option value$="[[item.model.key]]">
-          <div class="menu-item-with-icon">
-            <div>
-              <div>[[item.model.displayName]]</div>
-              <p class="model-subtitle">[[item.subtitle]]</p>
-            </div>
-            <template is="dom-if" if="[[shouldShowModelPremiumLabel_(item.model.access)]]">
+      <leo-option value$="[[item.model.key]]">
+        <div class="menu-item-with-icon">
+          <div>
+            <div>[[item.model.displayName]]</div>
+            <p class="model-subtitle">[[item.subtitle]]</p>
+          </div>
+          <template
+            is="dom-if"
+            if="[[item.model.option.leoModel]]"
+          >
+            <template is="dom-if" if="[[shouldShowModelPremiumLabel_(item.model.option.leoModel.access)]]">
               <leo-label mode="outline" color="blue">$i18n{braveLeoPremiumLabelNonPremium}</leo-label>
             </template>
-          </div>
-        </leo-option>
-      </template>
+          </template>
+        </div>
+      </leo-option>
+    </template>
   </leo-dropdown>
 </div>
 <cr-link-row class="hr"

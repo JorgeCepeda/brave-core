@@ -10,7 +10,11 @@ import "ocidl.idl";
 ]
 interface IBraveVpnWireguardManager : IUnknown
 {
-  HRESULT EnableVpn([in, string] const WCHAR* config, [out] DWORD* last_error);
+  HRESULT EnableVpn([in] BSTR public_key,
+                    [in] BSTR private_key,
+                    [in] BSTR address,
+                    [in] BSTR endpoint,
+                    [out] DWORD* last_error);
 
   HRESULT DisableVpn([out] DWORD* last_error);
 

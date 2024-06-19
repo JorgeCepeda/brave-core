@@ -19,7 +19,7 @@ import {
   type BraveLeoAssistantBrowserProxy,
   type Model,
   OperationResult,
-  BraveLeoAssistantBrowserProxyImpl,
+  BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
 
 const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -78,14 +78,17 @@ class ModelListSection extends ModelListSectionBase {
     // Need to do explicit null check because 0 is a valid index
     const isEditing = this.isEditingModelIndex_ !== null
 
-    const endpointUrlElement = e.currentTarget.$.inputEndpointUrlElement
+    // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
+    const modelConfigElement = this.$$('#model-config-ui') as any
+
     let response = null
 
     if (isEditing) {
       response = await this.browserProxy_
         .getSettingsHelper()
         .saveCustomModel(
-          this.isEditingModelIndex_ as number /* We can be confident that this is a number because of the null check */,
+          this
+            .isEditingModelIndex_ as number /* We can be confident that this is a number because of the null check */,
           e.detail.modelConfig
         )
     } else {
@@ -95,7 +98,7 @@ class ModelListSection extends ModelListSectionBase {
     }
 
     if (response.result === OperationResult.InvalidUrl) {
-      endpointUrlElement.invalid = true
+      modelConfigElement.isUrlInvalid = true
       return
     }
 

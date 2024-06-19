@@ -5,7 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
-#include <vector>
+#include <algorithm>
+#include <utility>
 
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
@@ -173,6 +174,20 @@ ModelService::ModelService(PrefService* prefs_service)
 }
 
 ModelService::~ModelService() = default;
+
+// static
+const mojom::Model* ModelService::GetModelForTesting(std::string_view key) {
+  const std::vector<mojom::ModelPtr>& all_models = GetLeoModels();
+
+  auto match_iter = std::find_if(
+      all_models.cbegin(), all_models.cend(),
+      [&key](const mojom::ModelPtr& model) { return model->key == key; });
+  if (match_iter != all_models.cend()) {
+    return &*match_iter->get();
+  }
+
+  return nullptr;
+}
 
 void ModelService::InitModels() {
   // Get leo and custom models

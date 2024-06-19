@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODELS_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODELS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_SERVICE_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_SERVICE_H_
 
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -47,6 +48,9 @@ class ModelService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // Returns a static model
+  static const mojom::Model* GetModelForTesting(std::string_view key);
+
  private:
   void InitModels();
   std::vector<ai_chat::mojom::ModelPtr> GetCustomModelsFromPrefs();
@@ -61,4 +65,4 @@ class ModelService : public KeyedService {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODELS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_SERVICE_H_

@@ -38,8 +38,6 @@ static_library("browser") {
     "engine/remote_completion_client.h",
     "model_service.cc",
     "model_service.h",
-    "model_service_factory.cc",
-    "model_service_factory.h",
     "utils.cc",
     "utils.h",
   ]
@@ -69,7 +67,7 @@ static_library("browser") {
     "//brave/components/skus/common:mojom",
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
-    "//components/keyed_service/content",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",
     "//net/traffic_annotation",

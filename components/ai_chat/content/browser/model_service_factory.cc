@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/model_service_factory.h"
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 
 namespace ai_chat {
 
@@ -41,8 +42,7 @@ ModelServiceFactory::~ModelServiceFactory() = default;
 std::unique_ptr<KeyedService>
 ModelServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<ModelService>(
-      Profile::FromBrowserContext(context)->GetPrefs());
+  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context));
 }
 
 }  // namespace ai_chat

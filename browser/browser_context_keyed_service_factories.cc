@@ -107,7 +107,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/model_service_factory.h"
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #endif
 
 namespace brave {

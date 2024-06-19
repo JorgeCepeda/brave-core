@@ -39,6 +39,10 @@ class ModelConfigUI extends ModelConfigUIBase {
         type: String,
         value: ''
       },
+      isUrlInvalid: {
+        type: Boolean,
+        value: false
+      },
       modelItem: {
         type: Object,
         value: null,
@@ -64,6 +68,7 @@ class ModelConfigUI extends ModelConfigUIBase {
   apiKey: string
   modelItem: mojom.Model | null
   isEditing_: boolean
+  isUrlInvalid: boolean
 
   override ready() {
     super.ready()
@@ -125,7 +130,8 @@ class ModelConfigUI extends ModelConfigUIBase {
   private onModelItemChange_(newValue: mojom.Model | null) {
     if (newValue && newValue.options.customModelOptions) {
       this.label = newValue.displayName
-      this.modelRequestName = newValue.options.customModelOptions.modelRequestName
+      this.modelRequestName =
+        newValue.options.customModelOptions.modelRequestName
       this.endpointUrl = newValue.options.customModelOptions.endpoint.url
       this.apiKey = newValue.options.customModelOptions.apiKey
     }

@@ -163,11 +163,11 @@ const HISTORY: mojom.ConversationTurn[] = [
 
 const MODELS: mojom.Model[] = [
   {
-    option: {
-      leoModel: {
-        key: '1',
+    key: '1',
+    displayName: 'Model One',
+    options: {
+      leoModelOptions: {
         name: 'model-one',
-        displayName: 'Model One',
         displayMaker: 'Company',
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
@@ -175,15 +175,15 @@ const MODELS: mojom.Model[] = [
         maxPageContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
-      customModel: undefined,
+      customModelOptions: undefined,
     }
   },
   {
-    option: {
-      leoModel: {
-        key: '2',
+    key: '2',
+    displayName: 'Model Two',
+    options: {
+      leoModelOptions: {
         name: 'model-two-premium',
-        displayName: 'Model Two',
         displayMaker: 'Company',
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
@@ -191,15 +191,15 @@ const MODELS: mojom.Model[] = [
         maxPageContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
-      customModel: undefined,
+      customModelOptions: undefined,
     }
   },
   {
-    option: {
-      leoModel: {
-        key: '3',
+    key: '3',
+    displayName: 'Model Three',
+    options: {
+      leoModelOptions: {
         name: 'model-three-freemium',
-        displayName: 'Model Three',
         displayMaker: 'Company',
         engineType: mojom.ModelEngineType.LLAMA_REMOTE,
         category: mojom.ModelCategory.CHAT,
@@ -207,15 +207,15 @@ const MODELS: mojom.Model[] = [
         maxPageContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
-      customModel: undefined,
+      customModelOptions: undefined,
     }
   },
   {
-    option: {
-      leoModel: undefined,
-      customModel: {
-        key: '4',
-        label: 'Microsoft Phi-3',
+    key: '4',
+    displayName: 'Microsoft Phi-3',
+    options: {
+      leoModelOptions: undefined,
+      customModelOptions: {
         modelRequestName: 'phi3',
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
@@ -253,7 +253,7 @@ export default {
       control: { type: 'select' }
     },
     model: {
-      options: MODELS.map(m => m.option.leoModel ? m.option.leoModel.displayName : m.option.customModel?.label),
+      options: MODELS.map(model => model.displayName),
       control: { type: 'select' }
     }
   },
@@ -268,7 +268,7 @@ export default {
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].option.leoModel,
+    model: MODELS[0].key,
     showAgreementModal: false,
     isMobile: false,
     shouldShowLongConversationInfo: false,
@@ -286,10 +286,10 @@ export default {
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
-      const currentModel = MODELS.find(m => m.option.leoModel ?  m.option.leoModel.displayName === options.args.model : m.option.customModel?.label === options.args.model)
+      const currentModel = MODELS.find(m => m.displayName === options.args.model)
 
       const switchToBasicModel = () => {
-        const nonPremiumModel = MODELS.find(m => m.option.leoModel?.access === mojom.ModelAccess.BASIC)
+        const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 

@@ -162,12 +162,12 @@
         chosen provider.
       </div>
       <cr-input
-        id="inputEndpointUrlElement"
         required
         type="url"
         value="[[endpointUrl]]"
         on-change="onModelServerEndpointChange_"
         error-message="Non-local endpoints should follow the HTTPS protocol for secure data transmission."
+        invalid="[[isUrlInvalid]]"
       ></cr-input>
     </div>
     <div class="input-container">

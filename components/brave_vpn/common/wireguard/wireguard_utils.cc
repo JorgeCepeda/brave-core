@@ -102,6 +102,17 @@ bool ValidateKey(const wchar_t* key,
     return false;
   }
 
+  std::string decoded_config;
+  if (!base::Base64Decode(*output, &decoded_config) || decoded_config.empty()) {
+    VLOG(1) << field_name << " is not base64 encoded";
+    return false;
+  }
+
+  if (decoded_config.length() != 32) {
+    VLOG(1) << field_name << " is not the correct length";
+    return false;
+  }
+
   return true;
 }
 

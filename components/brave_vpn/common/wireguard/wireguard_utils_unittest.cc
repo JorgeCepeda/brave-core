@@ -5,8 +5,12 @@
 
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
+#include <string>
+
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -14,9 +18,20 @@
 TEST(BraveVPNWireGuardUtilsUnitTest, ValidateKey) {
   std::string output;
   EXPECT_FALSE(brave_vpn::wireguard::ValidateKey(L"", &output, "public_key"));
-
-  EXPECT_TRUE(
+  EXPECT_FALSE(
       brave_vpn::wireguard::ValidateKey(L"abcdefghi", &output, "public_key"));
+
+  std::wstring key_str = base::UTF8ToWide(base::Base64Encode("abcdefghi"));
+  EXPECT_FALSE(brave_vpn::wireguard::ValidateKey(key_str.c_str(), &output,
+                                                 "public_key"));
+
+  key_str =
+      base::UTF8ToWide(base::Base64Encode("01234567890123456789012345678901"));
+  EXPECT_TRUE(brave_vpn::wireguard::ValidateKey(key_str.c_str(), &output,
+                                                "public_key"));
+
+  EXPECT_TRUE(brave_vpn::wireguard::ValidateKey(
+      L"MsdIM8m7Ee13QbjFe3fbFtShscNPxYrqQZHvXFnAago=", &output, "public_key"));
 }
 
 TEST(BraveVPNWireGuardUtilsUnitTest, ValidateAddress) {

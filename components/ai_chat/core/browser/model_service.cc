@@ -10,6 +10,8 @@
 
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
+#include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -230,6 +232,12 @@ const mojom::Model* ModelService::GetModel(std::string_view key) {
 }
 
 void ModelService::AddCustomModel(mojom::ModelPtr model) {
+  CHECK(model->key.empty()) << "Model key should be empty for new models.";
+
+  model->key = base::StrCat(
+      {"custom:",
+       base::Uuid::GenerateRandomV4().AsLowercaseString().substr(0, 8)});
+
   base::Value::List custom_models_pref =
       pref_service_->GetList(prefs::kCustomModelsList).Clone();
   base::Value::Dict model_dict = GetModelDict(std::move(model));

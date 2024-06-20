@@ -29,6 +29,7 @@ extern const char kLeoModelSupportUrl[];
 // the max context length is ~16k characters. To allow for follow-ups, set max
 // page content length to 60% of this, i.e., 9.6k characters.
 inline constexpr int kCustomModelMaxPageContentLength = 9600;
+inline constexpr int kCustomModelLongConversationCharLimit = 10000;
 
 }  // namespace ai_chat
 

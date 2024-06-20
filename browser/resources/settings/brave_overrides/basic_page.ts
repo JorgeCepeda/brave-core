@@ -447,7 +447,7 @@ RegisterPolymerTemplateModifications({
       // Insert Leo Assistant
       last = last.insertAdjacentElement('afterend', sectionLeoAssist)
       // Insert Custom Models List
-      last = last.insertAdjacentElement('afterend', sectionLeoCustomModels)
+      last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')

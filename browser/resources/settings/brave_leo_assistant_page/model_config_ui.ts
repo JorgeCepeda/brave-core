@@ -138,7 +138,7 @@ class ModelConfigUI extends ModelConfigUIBase {
   }
 
   private onModelItemChange_(newValue: mojom.Model | null) {
-    if (newValue && newValue.options.customModelOptions) {
+    if (newValue?.options.customModelOptions) {
       this.label = newValue.displayName
       this.modelRequestName =
         newValue.options.customModelOptions.modelRequestName

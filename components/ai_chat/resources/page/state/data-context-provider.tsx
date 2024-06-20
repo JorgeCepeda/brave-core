@@ -227,19 +227,26 @@ function DataContextProvider(props: DataContextProviderProps) {
     [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
-    // TODO(nullhook): Custom models are not supported yet
-    if (!currentModel || !currentModel.options.leoModelOptions) {
-      return false
-    }
-
     const chatHistoryCharTotal = conversationHistory.reduce((charCount, curr) => charCount + curr.text.length, 0)
+
     // TODO(nullhook): make this more accurately based on the actual page content length
-    let totalCharLimit = currentModel.options.leoModelOptions.longConversationWarningCharacterLimit
+    let totalCharLimit =
+      currentModel?.options.leoModelOptions !== undefined
+        ? currentModel.options.leoModelOptions
+            ?.longConversationWarningCharacterLimit
+        : loadTimeData.getInteger('customModelLongConversationCharLimit')
+
     if (shouldSendPageContents) {
-      totalCharLimit += currentModel.options.leoModelOptions.maxPageContentLength
+      totalCharLimit +=
+        currentModel?.options.leoModelOptions !== undefined
+          ? currentModel.options.leoModelOptions?.maxPageContentLength
+          : loadTimeData.getInteger('customModelMaxPageContentLength')
     }
 
-    if (!hasDismissedLongConversationInfo && chatHistoryCharTotal >= totalCharLimit) {
+    if (
+      !hasDismissedLongConversationInfo &&
+      chatHistoryCharTotal >= totalCharLimit
+    ) {
       return true
     }
 

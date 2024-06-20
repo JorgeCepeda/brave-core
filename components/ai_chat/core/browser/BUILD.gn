@@ -96,6 +96,7 @@ if (!is_ios) {
       "engine/engine_consumer_claude_unittest.cc",
       "engine/engine_consumer_conversation_api_unittest.cc",
       "engine/engine_consumer_llama_unittest.cc",
+      "engine/oai_api_client_unittest.cc",
     ]
 
     deps = [

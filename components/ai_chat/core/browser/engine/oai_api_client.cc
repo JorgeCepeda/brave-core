@@ -5,10 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
-#include <memory>
-#include <string>
-#include <utility>
-
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
@@ -35,7 +31,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
       semantics {
         sender: "AI Chat"
         description:
-          "This is used to communicate with Brave's AI Conversation API"
+          "This is used to communicate with user-provided server url"
           "on behalf of the user interacting with different browser AI"
           "features."
         trigger:
@@ -136,11 +132,18 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
     if (result.value_body().is_dict()) {
       const base::Value::List* choices =
           result.value_body().GetDict().FindList("choices");
-
+      if (!choices) {
+        DVLOG(2) << "No choices list found in response.";
+        return;
+      }
       if (choices->front().is_dict()) {
-        const base::Value::Dict* delta =
+        const base::Value::Dict* message =
             choices->front().GetDict().FindDict("message");
-        completion = *delta->FindString("content");
+        if (!message) {
+          DVLOG(2) << "No message dict found in response.";
+          return;
+        }
+        completion = *message->FindString("content");
       }
     }
 
@@ -170,6 +173,11 @@ void OAIAPIClient::OnQueryDataReceived(
   }
 
   const base::Value::List* choices = result->GetDict().FindList("choices");
+
+  if (!choices) {
+    DVLOG(2) << "No choices list found in response.";
+    return;
+  }
 
   if (choices->front().is_dict()) {
     const base::Value::Dict* delta =

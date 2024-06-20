@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -44,6 +45,15 @@ class OAIAPIClient {
                       GenerationCompletedCallback completed_callback);
 
   void ClearAllQueries();
+
+ protected:
+  void SetAPIRequestHelperForTesting(
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+    api_request_helper_ = std::move(api_helper);
+  }
+  api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
+    return api_request_helper_.get();
+  }
 
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,

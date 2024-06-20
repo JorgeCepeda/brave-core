@@ -82,6 +82,21 @@ class ModelConfigUI extends ModelConfigUIBase {
     const mojomUrl = { url: '' }
     mojomUrl.url = this.endpointUrl
 
+    // Adding random string to make sure the key is unique
+    // If editing, use the existing key
+    const modelKey = this.isEditing_
+      ? this.modelItem?.key
+      : `custom:${
+          new URL(this.endpointUrl).host
+        }:${this.modelRequestName.toLowerCase()}:${crypto
+          .randomUUID()
+          .slice(0, 8)}`
+
+    if (modelKey === undefined) {
+      console.error('Model key is undefined')
+      return
+    }
+
     const modelConfig: mojom.Model = {
       options: {
         customModelOptions: {
@@ -90,12 +105,7 @@ class ModelConfigUI extends ModelConfigUIBase {
           apiKey: this.apiKey
         }
       },
-      // Adding random string to make sure the key is unique
-      key: `custom:${
-        new URL(this.endpointUrl).host
-      }:${this.modelRequestName.toLowerCase()}:${crypto
-        .randomUUID()
-        .slice(0, 8)}`,
+      key: modelKey,
       displayName: this.label
     }
 

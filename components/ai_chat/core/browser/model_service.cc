@@ -249,6 +249,16 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   }
 
   auto model_iter = custom_models_pref.begin() + index;
+
+  const std::string& existing_key =
+      *model_iter->GetDict().FindString(kCustomModelItemKey);
+
+  // Make sure the key is not changed when modifying the model
+  // because Dict::Merge is destructive.
+  CHECK(existing_key == model->key)
+      << "Model key mismatch. Existing key: " << existing_key
+      << ", sent model key: " << model->key << ".";
+
   base::Value::Dict model_dict = GetModelDict(std::move(model));
   model_iter->GetDict().Merge(std::move(model_dict));
 

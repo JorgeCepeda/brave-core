@@ -54,6 +54,10 @@
     font: var(--leo-font-small-regular);
     margin-bottom: 5px;
   }
+
+  .actions-container leo-button:first-of-type {
+    margin-right: 5px;
+  }
 </style>
 
 <div class="settings-box">
@@ -155,9 +159,7 @@
           </leo-tooltip>
         </div>
       </div>
-      <div class="note">
-        $i18n{braveLeoAssistantProxyNote}
-      </div>
+      <div class="note">$i18n{braveLeoAssistantProxyNote}</div>
       <cr-input
         required
         type="url"
@@ -196,16 +198,20 @@
       >
       </cr-input>
     </div>
-    <cr-button
-      class="action-button"
-      disabled="[[!saveEnabled_(label,
+    <div class="actions-container">
+      <leo-button
+        disabled="[[!saveEnabled_(label,
     modelRequestName, endpointUrl)]]"
-      on-click="handleClick_"
-    >
-      [[buttonLabel_]]
-    </cr-button>
-    <cr-button on-click="handleCloseClick_"
-      >$i18n{braveLeoAssistantCloseButtonLabel}</cr-button
-    >
+        on-click="handleClick_"
+      >
+        [[buttonLabel_]]
+      </leo-button>
+      <leo-button
+        kind="plain-faint"
+        on-click="handleCloseClick_"
+      >
+        $i18n{braveLeoAssistantCloseButtonLabel}
+      </leo-button>
+    </div>
   </div>
 </div>

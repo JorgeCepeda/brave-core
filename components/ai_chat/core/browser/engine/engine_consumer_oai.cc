@@ -61,8 +61,8 @@ base::Value::List BuildMessages(
           : base::StrCat(
                 {base::ReplaceStringPlaceholders(
                      l10n_util::GetStringUTF8(
-                         is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
-                                  : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
+                         is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
+                                  : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
                      {page_content}, nullptr),
                  "\n\n"});
 
@@ -71,7 +71,7 @@ base::Value::List BuildMessages(
   std::string system_message = base::StrCat(
       {prompt_segment_article,
        base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART1),
+           l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
            {date_and_time_string}, nullptr)});
 
   // build

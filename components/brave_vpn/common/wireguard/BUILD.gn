@@ -17,6 +17,7 @@ source_set("wireguard") {
     "//crypto",
     "//net",
     "//third_party/boringssl",
+    "//third_party/re2",
     "//url",
   ]
 }

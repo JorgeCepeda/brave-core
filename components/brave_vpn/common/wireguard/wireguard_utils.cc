@@ -19,6 +19,7 @@
 #include "net/base/url_util.h"
 #include "third_party/boringssl/src/include/openssl/base64.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "url/url_util.h"
 
 namespace brave_vpn {
@@ -102,6 +103,11 @@ bool ValidateKey(const wchar_t* key,
     return false;
   }
 
+  if (!re2::RE2::FullMatch(*output, R"(^[-A-Za-z0-9+\/=]+$)")) {
+    VLOG(1) << field_name << " contains invalid characters";
+    return false;
+  }
+
   std::string decoded_config;
   if (!base::Base64Decode(*output, &decoded_config) || decoded_config.empty()) {
     VLOG(1) << field_name << " is not base64 encoded";
@@ -123,6 +129,11 @@ bool ValidateAddress(const wchar_t* address, std::string* output) {
   }
 
   base::TrimWhitespaceASCII(*output, base::TRIM_ALL, output);
+
+  if (!re2::RE2::FullMatch(*output, R"(^[A-z0-9._\-:[\]]+$)")) {
+    VLOG(1) << "address contains invalid characters";
+    return false;
+  }
 
   auto parsed = net::IPAddress::FromIPLiteral(*output);
   if (!parsed.has_value()) {
@@ -151,6 +162,11 @@ bool ValidateEndpoint(const wchar_t* endpoint, std::string* output) {
   }
 
   base::TrimWhitespaceASCII(*output, base::TRIM_ALL, output);
+
+  if (!re2::RE2::FullMatch(*output, R"(^[A-z0-9._\-:]+$)")) {
+    VLOG(1) << "endpoint contains invalid characters";
+    return false;
+  }
 
   std::string parsed_host;
   int parsed_port = 0;

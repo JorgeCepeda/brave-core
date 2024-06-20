@@ -21,11 +21,11 @@
   }
 
   .list-container {
-    padding: 0 20px;
+    padding: 0 var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-xl);
   }
 
   .action-box {
-    padding: 20px 0;
+    padding: var(--leo-spacing-xl);
   }
 
   .label-secondary {
@@ -44,56 +44,72 @@
 
 <div class="settings-box header">
   <div class="flex">
-    <div class="main-header">Your models</div>
+    <div class="main-header">$i18n{braveLeoAssistantYourModelsTitle}</div>
     <div class="label secondary">
-      <p>
-        Connect your self-hosted or third-party hosted LLM to Leo and use them
-        within the browser.
-      </p>
-      <p>
-        Use any OpenAI Chat Protocol compatible framework such as ollama and
-        oogabooga.
-      </p>
+      <p>$i18n{braveLeoAssistantYourModelsDesc1}</p>
+      <p>$i18n{braveLeoAssistantYourModelsDesc2}</p>
     </div>
   </div>
 </div>
 
 <div class="list-container">
-  <div class="list">
-    <template
-      is="dom-repeat"
-      items="[[customModelsList_]]"
-    >
-      <div class="model">
-        <div class="model-info">
-          <div class="label">[[item.displayName]]</div>
-          <div class="label-secondary">[[item.options.customModelOptions.modelRequestName]]</div>
-        </div>
-        <div class="model-actions">
-          <cr-icon-button
-            on-click="handleEdit_"
-            iron-icon="brave_settings20:edit-pencil"
-          ></cr-icon-button>
-          <cr-icon-button
-            on-click="handleDelete_"
-            iron-icon="brave_settings20:trash-can"
-          ></cr-icon-button>
-        </div>
-      </div>
-    </template>
-  </div>
-  <div class="action-box">
-    <template
-      is="dom-if"
-      if="[[!showModelConfig_]]"
-    >
-      <cr-button
-        on-click="handleAddNewModel_"
-        class="action-button"
-        >Add new model</cr-button
+  <template
+    is="dom-if"
+    if="[[!hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="alert-container">
+      <leo-alert
+        type="info"
+        has-actions="false"
       >
-    </template>
-  </div>
+        $i18n{braveLeoAssistantModelListEmptyLabel}
+      </leo-alert>
+    </div>
+  </template>
+
+  <template
+    is="dom-if"
+    if="[[hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="list">
+      <template
+        is="dom-repeat"
+        items="[[customModelsList_]]"
+      >
+        <div class="model">
+          <div class="model-info">
+            <div class="label">[[item.displayName]]</div>
+            <div class="label-secondary">
+              [[item.options.customModelOptions.modelRequestName]]
+            </div>
+          </div>
+          <div class="model-actions">
+            <cr-icon-button
+              on-click="handleEdit_"
+              iron-icon="brave_settings20:edit-pencil"
+            ></cr-icon-button>
+            <cr-icon-button
+              on-click="handleDelete_"
+              iron-icon="brave_settings20:trash-can"
+            ></cr-icon-button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<div class="action-box">
+  <template
+    is="dom-if"
+    if="[[!showModelConfig_]]"
+  >
+    <cr-button
+      on-click="handleAddNewModel_"
+      class="action-button"
+      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</cr-button
+    >
+  </template>
 </div>
 
 <template

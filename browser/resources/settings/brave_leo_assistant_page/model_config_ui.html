@@ -63,26 +63,25 @@
         is="dom-if"
         if="[[!isEditing_]]"
       >
-        <div class="primary-title">Add a model</div>
+        <div class="primary-title">$i18n{braveLeoAssistantAddModelLabel}</div>
       </template>
       <template
         is="dom-if"
         if="[[isEditing_]]"
       >
-        <div class="primary-title">Editing</div>
+        <div class="primary-title">$i18n{braveLeoAssistantEditModelLabel}</div>
       </template>
     </div>
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
-          <span class="required">Label</span>
+          <span class="required">$i18n{braveLeoAssistantInputModelLabel}</span>
           <leo-tooltip mode="default">
             <div
               slot="content"
               class="tooltip-content"
             >
-              The name of the model as it will appear in the model selection
-              menu
+              $i18n{braveLeoAssistantInputModelLabelTooltipInfo}
             </div>
             <leo-button
               size="small"
@@ -105,16 +104,15 @@
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
-          <span class="required">Model request name</span>
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelRequestName}</span
+          >
           <leo-tooltip mode="default">
             <div
               slot="content"
               class="tooltip-content"
             >
-              The name of the model as it should appear in the request to the
-              serving framework, i.e. phi-3 (note that if this name doesn’t
-              match exactly what is expected by the serving framework the
-              integration will not work)
+              $i18n{braveLeoAssistantInputModelRequestNameTooltipInfo}
             </div>
             <leo-button
               size="small"
@@ -137,15 +135,15 @@
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
-          <span class="required">Server endpoint</span>
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelServerEndpoint}</span
+          >
           <leo-tooltip mode="default">
             <div
               slot="content"
               class="tooltip-content"
             >
-              The url where your serving framework is listening for requests. If
-              you are not sure, check the serving framework documentation. E.g.
-              for Ollama, this is always http://localhost:11434/api/chat
+              $i18n{braveLeoAssistantInputModelServerEndpointTooltipInfo}
             </div>
             <leo-button
               size="small"
@@ -158,30 +156,27 @@
         </div>
       </div>
       <div class="note">
-        Brave does not proxy these requests, please read privacy terms of the
-        chosen provider.
+        $i18n{braveLeoAssistantProxyNote}
       </div>
       <cr-input
         required
         type="url"
         value="[[endpointUrl]]"
         on-change="onModelServerEndpointChange_"
-        error-message="Non-local endpoints should follow the HTTPS protocol for secure data transmission."
+        error-message="$i18n{braveLeoAssistantEndpointError}"
         invalid="[[isUrlInvalid]]"
       ></cr-input>
     </div>
     <div class="input-container">
       <div class="custom-label">
         <div class="label-text">
-          <span>API Key</span>
+          <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
           <leo-tooltip mode="default">
             <div
               slot="content"
               class="tooltip-content"
             >
-              Some serving frameworks may require authentication credentials,
-              such as an API key or an access token. These will be added to the
-              request header.
+              $i18n{braveLeoAssistantInputModelApiKeyTooltipInfo}
             </div>
             <leo-button
               size="small"
@@ -209,6 +204,8 @@
     >
       [[buttonLabel_]]
     </cr-button>
-    <cr-button on-click="handleCloseClick_">Close</cr-button>
+    <cr-button on-click="handleCloseClick_"
+      >$i18n{braveLeoAssistantCloseButtonLabel}</cr-button
+    >
   </div>
 </div>

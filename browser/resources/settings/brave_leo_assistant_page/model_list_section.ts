@@ -133,6 +133,10 @@ class ModelListSection extends ModelListSectionBase {
   private getEditingModel_(index: number, customModelsList: Model[]) {
     return customModelsList[index] ?? null
   }
+
+  private hasCustomModels_(customModelsList: Model[]) {
+    return customModelsList.length > 0
+  }
 }
 
 customElements.define(ModelListSection.is, ModelListSection)

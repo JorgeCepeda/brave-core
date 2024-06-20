@@ -25,7 +25,8 @@ export default function FeatureMenu() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const hasCustomModels = context.allModels.some(model => model.options.customModelOptions)
+  const customModels = context.allModels.filter(model => model.options.customModelOptions !== undefined)
+  const leoModels = context.allModels.filter(model => model.options.leoModelOptions !== undefined)
 
   return (
     <ButtonMenu
@@ -42,74 +43,60 @@ export default function FeatureMenu() {
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
       </div>
-      {context.allModels.map((model) => {
-        if (model.options.leoModelOptions) {
-          return (
-            <leo-menu-item
-              key={model.key}
-              aria-selected={
-                model.key ===
-                  context.currentModel?.key || null
-              }
-              onClick={() => context.setCurrentModel(model)}
-            >
-              <div className={styles.menuItemWithIcon}>
-                <div className={styles.menuText}>
-                  <div>{model.displayName}</div>
-                  <p className={styles.modelSubtitle}>
-                    {getLocale(`braveLeoModelSubtitle-${model.key}`)}
-                  </p>
-                </div>
-                {model.options.leoModelOptions.access === mojom.ModelAccess.PREMIUM &&
-                  !context.isPremiumUser && (
-                    <Label
-                      className={styles.modelLabel}
-                      mode={'outline'}
-                      color='blue'
-                    >
-                      {getLocale('modelPremiumLabelNonPremium')}
-                    </Label>
-                  )}
+      {leoModels.map((model) => {
+        return (
+          <leo-menu-item
+            key={model.key}
+            aria-selected={model.key === context.currentModel?.key || null}
+            onClick={() => context.setCurrentModel(model)}
+          >
+            <div className={styles.menuItemWithIcon}>
+              <div className={styles.menuText}>
+                <div>{model.displayName}</div>
+                <p className={styles.modelSubtitle}>
+                  {getLocale(`braveLeoModelSubtitle-${model.key}`)}
+                </p>
               </div>
-            </leo-menu-item>
-          )
-        } else {
-          return null
-        }
+              {model.options.leoModelOptions?.access ===
+                mojom.ModelAccess.PREMIUM &&
+                !context.isPremiumUser && (
+                  <Label
+                    className={styles.modelLabel}
+                    mode={'outline'}
+                    color='blue'
+                  >
+                    {getLocale('modelPremiumLabelNonPremium')}
+                  </Label>
+                )}
+            </div>
+          </leo-menu-item>
+        )
       })}
-      {hasCustomModels && (
+      {customModels.length > 0 && (
         <>
           <div className={styles.menuSeparator} />
           <div className={styles.menuSectionCustomModel}>
             {getLocale('menuTitleCustomModels')}
           </div>
         </>
-
       )}
-      { context.allModels.map((model) => {
-        if (model.options.customModelOptions) {
-          return (
-            <leo-menu-item
-              key={model.key}
-              aria-selected={
-                model.key ===
-                  context.currentModel?.key || null
-              }
-              onClick={() => context.setCurrentModel(model)}
-            >
-              <div className={styles.menuItemWithIcon}>
-                <div className={styles.menuText}>
-                  <div>{model.displayName}</div>
-                  <p className={styles.modelSubtitle}>
-                    {model.options.customModelOptions?.modelRequestName}
-                  </p>
-                </div>
+      {customModels.map((model) => {
+        return (
+          <leo-menu-item
+            key={model.key}
+            aria-selected={model.key === context.currentModel?.key || null}
+            onClick={() => context.setCurrentModel(model)}
+          >
+            <div className={styles.menuItemWithIcon}>
+              <div className={styles.menuText}>
+                <div>{model.displayName}</div>
+                <p className={styles.modelSubtitle}>
+                  {model.options.customModelOptions?.modelRequestName}
+                </p>
               </div>
-            </leo-menu-item>
-          )
-        } else {
-          return null
-        }
+            </div>
+          </leo-menu-item>
+        )
       })}
       <div className={styles.menuSeparator} />
 

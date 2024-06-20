@@ -10,7 +10,7 @@ import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {CrSettingsPrefs} from '/shared/settings/prefs/prefs_types.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
-import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess}
+import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
   from './brave_leo_assistant_browser_proxy.js'
 import 'chrome://resources/brave/leo.bundle.js'
 import { Router } from '../router.js';
@@ -158,6 +158,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       this.browserProxy_.getSettingsHelper().getPremiumStatus().then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
         this.premiumStatus_ = value.status
       })
+    }
+
+    private hasLeoModelOptions_(model: Model) {
+      return model.options.leoModelOptions !== undefined
     }
 
     onLeoAssistantShowOnToolbarChange_(e: any) {

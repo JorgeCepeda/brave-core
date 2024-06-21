@@ -19,6 +19,7 @@ program
   .option('--target_os <target_os>', 'comma-separated target OS list')
   .option('--target_arch <target_arch>', 'comma-separated target architecture list')
   .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
+  .option('--channel <channel>', 'target channel to update branding files', /^(beta|dev|nightly|release)$/i)
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--fetch_all', 'fetch all tags and branch heads')
@@ -69,16 +70,13 @@ async function RunCommand() {
 
   depotTools.installDepotTools()
 
-  if (program.init || !fs.existsSync(config.defaultGClientFile)) {
+  if (
+    program.init ||
+    program.target_os ||
+    program.target_arch ||
+    !fs.existsSync(config.defaultGClientFile)
+  ) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
-  } else if (program.target_os) {
-    Log.warn(
-        '--target_os is ignored. If you are attempting to sync with ' +
-        'a different target_os argument from that used originally via init ' +
-        '(and specified in the .gclient file), then you will likely not end ' +
-        'up with the correct dependency projects. Specify new target_os ' +
-        'values with --init, or edit .gclient manually before running sync ' +
-        'again.')
   }
 
   if (config.isCI) {
@@ -107,6 +105,10 @@ async function RunCommand() {
     Log.progressScope('gclient runhooks', () => {
       util.runGClient(['runhooks'])
     })
+  }
+
+  if (program.channel) {
+    util.updateBranding();
   }
 }
 
